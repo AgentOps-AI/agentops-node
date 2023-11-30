@@ -18,7 +18,7 @@ import { Client } from 'agentops';
 const openai = new OpenAI();                        // Add your API key here or in the .env
 
 const agentops = new Client({
-    apiKey: "8b1df918-642c-41c1-b3bf-d2f84de752c1", // Add your API key here or in the .env
+    apiKey: "<Insert AgentOps API Key>",            // Add your API key here or in the .env
     tags: ["abc", "success"],                       // Optionally add tags to your run
     patchApi: [openai]                              // Record LLM calls automatically (Only OpenAI is currently supported)
 });
