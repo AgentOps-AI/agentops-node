@@ -1,0 +1,19 @@
+{
+  "name": "agentops-node-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "npx tsc && node dist/index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "agentops-node": "^0.0.1",
+    "openai": "^4.19.0"
+  }
+}

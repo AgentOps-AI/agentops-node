@@ -1,0 +1,39 @@
+{
+  "name": "agentops-node",
+  "description": "AI agents suck. We are fixing that.",
+  "version": "0.0.1",
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AgentOps-AI/agentops-node.git"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "LLM",
+    "SDK",
+    "AgentOps"
+  ],
+  "author": "Siyang Qiu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AgentOps-AI/agentops-node/issues"
+  },
+  "homepage": "https://github.com/AgentOps-AI/agentops-node#readme",
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "@types/uuid": "^9.0.7",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "axios": "^1.6.1",
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.1"
+  },
+  "peerDependencies": {
+    "openai": "^4.0.0"
+  }
+}
