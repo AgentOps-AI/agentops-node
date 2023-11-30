@@ -8,12 +8,12 @@ Build your next agent with evals, observability, and replay analytics. AgentOps 
 
 ## Quick Start
 Install AgentOps
-```npm install agentops-node```
+```npm install agentops```
 
 Add AgentOps to your code. Check out an [example](https://github.com/AgentOps-AI/agentops-node/blob/main/example/index.ts).
 ```
 import OpenAI from "openai";
-import { Client } from 'agentops-node';
+import { Client } from 'agentops';
 
 const openai = new OpenAI();                        // Add your API key here or in the .env
 

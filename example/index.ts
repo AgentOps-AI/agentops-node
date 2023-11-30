@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { Client } from 'agentops-node';
+import { Client } from 'agentops';
 
 const openai = new OpenAI(); // Add your API key here or in the .env
 

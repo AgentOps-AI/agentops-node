@@ -13,7 +13,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "agentops-node": "^0.0.1",
+    "agentops": "^0.0.1",
     "openai": "^4.19.0"
   }
 }
