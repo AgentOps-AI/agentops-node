@@ -9,12 +9,13 @@ function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-export async function post(url: string, payload: any, apiKey: string) {
+export async function post(url: string, payload: any, apiKey: string, orgKey?: string) {
     for (let i = 0; i < RETRY_LIMIT; i++) {
         try {
             return axios.post(url, payload, {
                 headers: {
                     "X-Agentops-Auth": apiKey,
+                    "X-Agentops-Org": orgKey,
                     "Content-Type": "application/json; charset=UTF-8",
                     "Accept": "*/*"
                 }
@@ -27,16 +28,16 @@ export async function post(url: string, payload: any, apiKey: string) {
 }
 
 
-export async function postEvents(endpoint: string, events: Event[], apiKey: string) {
+export async function postEvents(endpoint: string, events: Event[], apiKey: string, orgKey?: string) {
     const payload = {
         events: transformKeysToSnakeCase(events)
     }
-    return post(`${endpoint}/events`, payload, apiKey);
+    return post(`${endpoint}/events`, payload, apiKey, orgKey);
 }
 
-export async function postSession(endpoint: string, session: Session, apiKey: string) {
+export async function postSession(endpoint: string, session: Session, apiKey: string, orgKey?: string) {
     const payload = {
         session: transformKeysToSnakeCase(session)
     }
-    return post(`${endpoint}/sessions`, payload, apiKey);
+    return post(`${endpoint}/sessions`, payload, apiKey, orgKey);
 }
