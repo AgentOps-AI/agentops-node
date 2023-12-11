@@ -17,6 +17,7 @@ dotenv.config();
 
 export class Client {
     private apiKey: string;
+    private orgKey: string;
     private session: Session | null = null;
     private endpoint = 'https://agentops-server-v2.fly.dev';
     private maxQueueSize = 100;
@@ -25,6 +26,7 @@ export class Client {
 
     constructor(config: {
         apiKey?: string;
+        orgKey?: string;
         tags?: string[];
         endpoint?: string;
         maxWaitTime?: number;
@@ -37,11 +39,13 @@ export class Client {
             console.log('AgentOps API key not provided. Session data will not be recorded.');
         }
 
+        this.orgKey = config.orgKey || process.env.AGENTOPS_ORG_KEY || '';
+
         if (this.apiKey) {
             this.session = new Session(uuidv4(), config.tags);
             if (config.endpoint) this.endpoint = config.endpoint;
             if (config.maxQueueSize) this.maxQueueSize = config.maxQueueSize;
-            postSession(this.endpoint, this.session, this.apiKey);
+            postSession(this.endpoint, this.session, this.apiKey, this.orgKey);
             this.setupWorker(config.maxWaitTime || 1000);
 
             config.patchApi?.forEach((api) => this.patchApi(api))
@@ -76,7 +80,7 @@ export class Client {
         if (this.apiKey) {
             const events = this.queue.slice();
             this.queue = [];
-            postEvents(this.endpoint, events, this.apiKey);
+            postEvents(this.endpoint, events, this.apiKey, this.orgKey);
         }
     }
 
@@ -183,7 +187,7 @@ export class Client {
             if (this.worker) clearInterval(this.worker);
             this.flushQueue();
             this.session.endSession(endState, rating);
-            await postSession(this.endpoint, this.session, this.apiKey);
+            await postSession(this.endpoint, this.session, this.apiKey, this.orgKey);
         } else {
             console.info('Warning: The session has already been ended.');
         }
