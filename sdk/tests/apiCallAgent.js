@@ -1,5 +1,5 @@
 const OpenAI = require("openai");
-const Client = require("agentops").Client;
+const Client = require("../dist/app").Client;
 
 const openai = new OpenAI(apiKey = process.env.OPENAI_API_KEY);
 
