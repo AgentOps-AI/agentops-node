@@ -77,7 +77,7 @@ export class Client {
     }
 
     private flushQueue() {
-        if (this.apiKey) {
+        if (this.apiKey && this.queue.length > 0) {
             const events = this.queue.slice();
             this.queue = [];
             postEvents(this.endpoint, events, this.apiKey, this.orgKey);
