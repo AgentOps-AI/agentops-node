@@ -1,6 +1,0 @@
-{
-  "ignoredDirectories": ["node_modules"],
-  "ignoredFiles": [],
-  "includeFailingTests": true,
-  "testSuffix": "test"
-}
