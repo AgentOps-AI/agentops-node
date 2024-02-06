@@ -11,7 +11,7 @@ Install AgentOps
 ```npm install agentops```
 
 Add AgentOps to your code. Check out an [example](https://github.com/AgentOps-AI/agentops-node/blob/main/example/index.ts).
-```
+```javascript
 import OpenAI from "openai";
 import { Client } from 'agentops';
 
