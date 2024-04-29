@@ -1,10 +1,49 @@
-# AgentOps BETA🕵️
+<div align="center">
+  <img src="logo.png" style="margin: 15px; max-width: 300px" width="50%" alt="Logo">
+</div>
+<p align="center">
+  <em>AI agents suck. We’re fixing that.</em>
+</p>
 
-AI agents suck. We’re fixing that.
+<p align="center">
+    <a href="https://pypi.org/project/agentops/" target="_blank">
+        <img alt="Node" src="https://img.shields.io/badge/node-js?style=for-the-badge&logo=javascript&logoColor=ffdd54" />
+        <img alt="Version" src="https://img.shields.io/node/v/agentops?style=for-the-badge&color=3670A0">
+    </a>
+</p>
+<p align="center">
+<a href="https://twitter.com/agentopsai/">🐦 Twitter</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="https://discord.gg/JHPt4C7r">📢 Discord</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="https://app.agentops.ai/?=gh">🖇️ AgentOps</a>
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+<a href="https://docs.agentops.ai/introduction">📙 Documentation</a>
+</p>
 
-Build your next agent with evals, observability, and replay analytics. AgentOps is the toolkit for evaluating and developing robust and reliable AI agents.
+# AgentOps
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Build your next agent with benchmarks, observability, and replay analytics. AgentOps is the toolkit for evaluating and developing robust and reliable AI agents.
+
+AgentOps is open beta. You can sign up for AgentOps [here](https://app.agentops.ai).
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+![Node - Version](https://img.shields.io/node/v/agentops) 
+<img src="https://img.shields.io/npm/dm/agentops"> 
+<a href="https://twitter.com/agentopsai">
+<img src="https://img.shields.io/badge/follow-%40agentops-1DA1F2?logo=twitter&style=social" alt="AgentOps Twitter" />
+</a>
+<a href="https://discord.gg/mKW3ZhN9p2">
+<img src="https://img.shields.io/badge/chat-on%20Discord-blueviolet" alt="Discord community channel" />
+</a>
+<a href="mailto:investor@agentops.ai"><img src="https://img.shields.io/website?color=%23f26522&down_message=Y%20Combinator&label=Not%20Backed%20By&logo=ycombinator&style=flat-square&up_message=Y%20Combinator&url=https%3A%2F%2Fwww.ycombinator.com"></a>
+<a href="https://github.com/agentops-ai/agentops/issues">
+<img src="https://img.shields.io/github/commit-activity/m/agentops-ai/agentops-node" alt="git commit activity" />
+</a>
+
+
+> 🚨 NOTE: This Typescript library is still in alpha and does not currently support many of the functionalities available 
+> with the [python SDK](https://github.com/AgentOps-AI/agentops). If possible, using Python is recommended.
 
 ## Quick Start
 Install AgentOps
