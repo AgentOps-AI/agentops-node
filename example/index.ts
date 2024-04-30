@@ -1,13 +1,11 @@
 import OpenAI from "openai";
-import { Client } from 'agentops';
+import { agentops } from 'agentops';
 
-const openai = new OpenAI();                        // Add your API key here or in the .env
+const openai = new OpenAI();
 
-const agentops = new Client({
-    apiKey: "",                                     // Add your API key here or in the .env
-    tags: ["abc", "success"],                       // Optionally add tags to your run
-    patchApi: [openai]                              // Record LLM calls automatically (Only OpenAI is currently supported)
-});
+// Add your API key here or in the .env
+agentops.init({tags: ["abc", "success"], patchApi: [openai] })
+
 
 // agentops.patchApi(openai)                        // Alternatively, you can patch API calls later
 

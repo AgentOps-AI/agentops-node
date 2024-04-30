@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { transformKeysToSnakeCase } from "./utils";
-import { Event } from './app'
+import { transformKeysToSnakeCase } from "./helpers";
 import { Session } from './session';
+import {Event} from './event'
 
 const RETRY_LIMIT = 5;
 

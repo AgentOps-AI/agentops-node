@@ -1,7 +1,7 @@
 {
   "name": "agentops",
   "description": "AI agents suck. We are fixing that.",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "main": "dist/app.js",
   "scripts": {
     "build": "npx tsc"
@@ -31,6 +31,7 @@
   "dependencies": {
     "axios": "^1.6.1",
     "dotenv": "^16.3.1",
+    "os-utils": "^0.0.14",
     "uuid": "^9.0.1"
   },
   "peerDependencies": {

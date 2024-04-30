@@ -12,43 +12,39 @@ import {
     ChatCompletionCreateParamsNonStreaming,
     ChatCompletionCreateParamsStreaming,
 } from 'openai/resources/chat/completions';
+import {Singleton} from "./singleton";
+import {Config} from "./types";
+import {Event, ErrorEvent, LLMEvent, ActionEvent} from './event'
 
 dotenv.config();
 
+@Singleton
 export class Client {
-    private apiKey: string;
-    private orgKey: string;
-    private session: Session | null = null;
-    private endpoint = 'https://agentops-server-v2.fly.dev';
-    private maxQueueSize = 100;
+    private readonly apiKey: string;
+    private readonly orgKey: string;
+    private readonly session: Session | null = null;
+    private readonly endpoint: string = 'https://agentops-server-v2.fly.dev';
+    private readonly maxQueueSize: number = 100;
     private queue: any[] = [];
     private worker: NodeJS.Timeout | null = null;
 
-    constructor(config: {
-        apiKey?: string;
-        orgKey?: string;
-        tags?: string[];
-        endpoint?: string;
-        maxWaitTime?: number;
-        maxQueueSize?: number
-        patchApi?: any[]
-    }) {
-        this.apiKey = config.apiKey || process.env.AGENTOPS_API_KEY || '';
+    constructor(config?: Config) {
+        this.apiKey = config?.apiKey || process.env.AGENTOPS_API_KEY || '';
 
         if (!this.apiKey) {
             console.log('AgentOps API key not provided. Session data will not be recorded.');
         }
 
-        this.orgKey = config.orgKey || process.env.AGENTOPS_ORG_KEY || '';
+        this.orgKey = config?.orgKey || process.env.AGENTOPS_ORG_KEY || '';
 
         if (this.apiKey) {
-            this.session = new Session(uuidv4(), config.tags);
-            if (config.endpoint) this.endpoint = config.endpoint;
-            if (config.maxQueueSize) this.maxQueueSize = config.maxQueueSize;
+            this.session = new Session(uuidv4(), config?.tags);
+            if (config?.endpoint) this.endpoint = config.endpoint;
+            if (config?.maxQueueSize) this.maxQueueSize = config.maxQueueSize;
             postSession(this.endpoint, this.session, this.apiKey, this.orgKey);
-            this.setupWorker(config.maxWaitTime || 1000);
+            this.setupWorker(config?.maxWaitTime || 1000);
 
-            config.patchApi?.forEach((api) => this.patchApi(api))
+            config?.patchApi?.forEach((api) => this.patchApi(api))
         }
     }
 
@@ -127,34 +123,30 @@ export class Client {
             timer: string
         ) => {
             const res = await response;
-            const event = new Event(
-                type,
-                body,
-                { content: res.choices[0]['message']['content'] },
-                "Success",
-                [],
-                "llm",
-                res['model'],
-                body['messages'],
-                timer);
+            const event = new LLMEvent({
+                prompt: body['messages'].toString(),
+                prompt_tokens: res.usage?.prompt_tokens,
+                completion: res.choices[0].message.content ?? undefined,
+                completion_tokens: res.usage?.completion_tokens,
+                returns: res.model.toString(),
+                model: res.model
+            });
+            event.init_timestamp = timer
+            event.end_timestamp = new Date().toISOString();
             this.record(event);
         }
     }
 
-    wrap(func: Function, tags?: string[]) {
+    wrap(func: Function) {
         const record = async (args: any, response: any, timer: string) => {
-            const res = response;
-            const event = new Event(
-                func.name,
-                args,
-                res,
-                'Success',
-                tags,
-                'action',
-                undefined,
-                undefined,
-                timer
+            const event = new ActionEvent({
+                params: args,
+                returns: response,
+                action_type: func.name,
+              }
             );
+            event.init_timestamp = timer
+            event.end_timestamp = new Date().toISOString();
             this.record(event);
         };
 
@@ -170,7 +162,7 @@ export class Client {
         return func;
     }
 
-    record(event: Event): void {
+    record(event: Event | ErrorEvent): void {
         if (this.session && !this.session.hasEnded()) {
             this.queue.push({
                 session_id: this.session.sessionId,
@@ -191,43 +183,5 @@ export class Client {
         } else {
             console.info('Warning: The session has already been ended.');
         }
-    }
-}
-
-export interface Event {
-    eventType: string;
-    params: string | object;
-    returns: string | object;
-    result: 'Indeterminate' | 'Success' | 'Fail';
-    tags: string[];
-    actionType: 'action' | 'api' | 'llm';
-    model: string;
-    prompt: string | object;
-    endTimestamp: string;
-    initTimestamp: string;
-}
-
-export class Event implements Event {
-    constructor(
-        eventType: Event['eventType'],
-        params?: Event['params'],
-        returns?: Event['returns'],
-        result?: Event['result'],
-        tags?: Event['tags'],
-        actionType?: Event['actionType'],
-        model?: Event['model'],
-        prompt?: Event['prompt'],
-        initTimestamp?: Event['initTimestamp']
-    ) {
-        this.eventType = eventType;
-        this.params = params || '';
-        this.returns = returns || '';
-        this.result = result || 'Indeterminate';
-        this.tags = tags || [];
-        this.actionType = actionType || 'action';
-        this.model = model || '';
-        this.prompt = prompt || '';
-        this.endTimestamp = new Date().toISOString();
-        this.initTimestamp = initTimestamp || this.endTimestamp;
     }
 }
