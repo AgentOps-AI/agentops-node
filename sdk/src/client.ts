@@ -22,8 +22,8 @@ dotenv.config();
 export class Client {
     private readonly apiKey: string;
     private readonly orgKey: string;
-    private readonly session: Session | null = null;
-    private readonly endpoint: string = 'https://agentops-server-v2.fly.dev';
+    private session: Session | null = null;
+    private readonly endpoint: string = 'https://api.agentops.ai';
     private readonly maxQueueSize: number = 100;
     private queue: any[] = [];
     private worker: NodeJS.Timeout | null = null;
@@ -35,17 +35,29 @@ export class Client {
             console.log('AgentOps API key not provided. Session data will not be recorded.');
         }
 
-        this.orgKey = config?.orgKey || process.env.AGENTOPS_ORG_KEY || '';
+        this.orgKey = config?.parentKey || process.env.AGENTOPS_ORG_KEY || '';
 
         if (this.apiKey) {
-            this.session = new Session(uuidv4(), config?.tags);
             if (config?.endpoint) this.endpoint = config.endpoint;
             if (config?.maxQueueSize) this.maxQueueSize = config.maxQueueSize;
-            postSession(this.endpoint, this.session, this.apiKey, this.orgKey);
+            if (config?.auto_start_session === undefined || config.auto_start_session) {
+                this.session = new Session(uuidv4(), config?.tags);
+                postSession(this.endpoint, this.session, this.apiKey, this.orgKey);
+            }
             this.setupWorker(config?.maxWaitTime || 1000);
 
-            config?.patchApi?.forEach((api) => this.patchApi(api))
+            if (config?.instrument_llm_calls === undefined || config.instrument_llm_calls) {
+                config?.patchApi?.forEach((api) => this.patchApi(api))
+            }
         }
+    }
+
+    startSession(config?: Config) {
+        if (!this.apiKey) {
+            return console.error('🖇️ AgentOps API key not provided. Session data will not be recorded.');
+        }
+        this.session = new Session(uuidv4(), config?.tags);
+        postSession(this.endpoint, this.session, this.apiKey, this.orgKey);
     }
 
     private setupWorker(maxWaitTime: number) {

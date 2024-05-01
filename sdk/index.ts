@@ -9,7 +9,7 @@ export function init(config?: Config) {
 }
 
 export function startSession(config?: Config) {
-  // new Client().
+  new Client().startSession(config)
 }
 
 export async function endSession(endState: Session['endState'], rating?: Session['rating']) {
