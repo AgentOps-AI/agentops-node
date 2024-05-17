@@ -1,3 +1,5 @@
+## NOTE: This Typescript SDK is for AgentOps legacy. There is no Typescript support for the current version of AgentOps.
+
 <div align="center">
   <img src="logo.png" style="margin: 15px; max-width: 300px" width="50%" alt="Logo">
 </div>
